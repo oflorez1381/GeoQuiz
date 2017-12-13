@@ -34,45 +34,22 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
 
         mQuestionTextView = (TextView)findViewById(R.id.question_text_view);
-        mQuestionTextView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getNextQuestion();
-            }
-        });
+        mQuestionTextView.setOnClickListener(view -> getNextQuestion());
+
         updateQuestion();
 
         mTrueButton = (Button) findViewById(R.id.true_button);
-        mTrueButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                checkAnswer(true);
-            }
-        });
+        mTrueButton.setOnClickListener(view -> checkAnswer(true));
 
         mFalseButton = (Button) findViewById(R.id.false_button);
-        mFalseButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                checkAnswer(false);
-            }
-        });
+        mFalseButton.setOnClickListener(view -> checkAnswer(false));
 
         mNextButton = (ImageButton) findViewById(R.id.next_button);
-        mNextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getNextQuestion();
-            }
-        });
+        mNextButton.setOnClickListener(view -> getNextQuestion());
 
         mPreviousButton = (ImageButton) findViewById(R.id.previous_button);
-        mPreviousButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getPreviousQuestion();
-            }
-        });
+        mPreviousButton.setOnClickListener(view -> getPreviousQuestion());
+
     }
 
     private void updateQuestion() {
@@ -91,22 +68,31 @@ public class QuizActivity extends AppCompatActivity {
         }
 
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show();
+        setInvisibleButtonAnswers();
     }
 
     private void getNextQuestion() {
         mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
         updateQuestion();
+        setVisibleButtonAnswers();
     }
 
-
     private void getPreviousQuestion() {
-
         mCurrentIndex = (mCurrentIndex - 1) % mQuestionBank.length;
-
         if(mCurrentIndex < 0){
             mCurrentIndex = 0;
         }
-
         updateQuestion();
+        setVisibleButtonAnswers();
+    }
+
+    private void setVisibleButtonAnswers(){
+        mFalseButton.setVisibility(View.VISIBLE);
+        mTrueButton.setVisibility(View.VISIBLE);
+    }
+
+    private void setInvisibleButtonAnswers(){
+        mFalseButton.setVisibility(View.INVISIBLE);
+        mTrueButton.setVisibility(View.INVISIBLE);
     }
 }
